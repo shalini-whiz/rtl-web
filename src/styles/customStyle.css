@@ -1,0 +1,33 @@
+.button-with-line {
+  position: relative;
+  border: none;
+  cursor: pointer;
+}
+
+.button-with-line::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 2px;
+  background-color: black;
+}
+
+.button-with-main-line {
+  position: relative;
+  border: none;
+  cursor: pointer;
+}
+
+.button-with-main-line::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 2px;
+  background-color: black;
+}
