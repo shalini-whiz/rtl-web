@@ -34,23 +34,6 @@ class UploadInputs extends React.Component {
   }
 
   componentDidMount() {
-    console.log("call projects")
-    this.getProjects()
-  }
-
-
-  getProjects = () => {
-    let params = { "op": "getProject" };
-    console.log("params " + JSON.stringify(params))
-    commons.getAPIRes(params, "POST", "project")
-      .then(res => {
-        if (res.status) {
-          const transformedData = res.result.map(item => ({ ...item, _id: item._id.$oid }));
-          this.setState({ projects: transformedData, projectId: transformedData[0]._id })
-
-        }
-
-      });
   }
 
 
@@ -61,7 +44,7 @@ class UploadInputs extends React.Component {
 
   uploadFile = async (e) => {
     const validTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel'];
+      'application/vnd.ms-excel', 'application/xml', 'text/xml'];
     console.log(e.target.files[0]);
     let uploadedFile = e.target.files[0];
     console.log(uploadedFile.type)
@@ -88,7 +71,7 @@ class UploadInputs extends React.Component {
     let { selectedImage } = this.state;
     console.log("local projectId" + localStorage.getItem("projectId"))
     const validTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel'];
+      'application/vnd.ms-excel', 'application/xml', 'text/xml'];
     this.setState({ uploadErr: "", projectError: false })
     let projectId = localStorage.getItem("projectId")
     if (projectId == '') {
@@ -114,14 +97,51 @@ class UploadInputs extends React.Component {
     for (var pair of data.entries()) {
       console.log(pair[0] + ', ' + pair[1] + " , " + typeof pair[1]);
     }
-    let apiRes = await commons.getAPIRes(data, "POSTFORMDATA", "fileOp");
-    console.log("upload file apiRes here " + JSON.stringify(apiRes))
-    this.setState({ apiService: false })
+    try {
+      commons.getAPIRes(data, "POSTFORMDATA", "fileOp").then(res => {
+        this.setState({ apiService: false })
+        if (res.status) {
+          console.log(res.result)
+          const zipContent = atob(res.result);
+          const zipBlob = new Blob([Uint8Array.from(zipContent, c => c.charCodeAt(0))], { type: 'application/zip' });
+          const url = window.URL.createObjectURL(zipBlob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'files.zip');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
 
-    if (apiRes.status) {
+      });
+      const response = await fetch('http://localhost:5000/fileOp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: data
+      });
 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
+      const responseData = await response.json();
+
+      if (responseData.status) {
+        const zipContent = atob(responseData.result);
+        const zipBlob = new Blob([Uint8Array.from(zipContent, c => c.charCodeAt(0))], { type: 'application/zip' });
+        const url = window.URL.createObjectURL(zipBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'files.zip');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.error('There was an error downloading the zip file!', error);
     }
+
+
 
   };
 
@@ -179,11 +199,7 @@ class UploadInputs extends React.Component {
           </CardContent>
 
           <CardActions style={{ justifyContent: "flex-end" }} >
-            <Button variant="contained" color="primary"
-              style={customStyles.errorBtn}
-              size="small" onClick={e => this.resetForm(e)} >
-              Cancel
-            </Button>
+
             <Button variant="contained" color="primary"
               style={customStyles.successBtn}
               size="small" onClick={e => this.saveProfile(e)}

@@ -1,4 +1,4 @@
-import {urls} from "../constants/urlConstants";
+import { urls } from "../constants/urlConstants";
 import AuthService from "./AuthService";
 
 class APIService {
@@ -28,10 +28,10 @@ class APIService {
                 method: methodType
             });
         }
-        else if (methodType === "POSTFORMDATA"){
+        else if (methodType === "POSTFORMDATA") {
             return fetch(reqURL, {
                 headers: {
-                    Authorization: "Bearer " + token
+                    Authorization: "Bearer " + token,
                 },
                 credentials: "omit",
                 method: "POST",

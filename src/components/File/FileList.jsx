@@ -47,7 +47,7 @@ class FileList extends React.Component {
       message: "",
       apiService: false,
       fileList: [],
-      viewType: false,
+      viewType: true,
       projectId: "",
       projects: [],
       projectError: false
@@ -101,20 +101,45 @@ class FileList extends React.Component {
     let projectId = localStorage.getItem("projectId")
 
     let params = { "op": "viewOutputs", type: this.props.type.toLowerCase(), projectId: projectId };
-    commons.getAPIRes(params, "POST", "project")
-      .then(res => {
 
-        this.setState({ apiService: false })
-        if (res.status) {
-          this.setState({ fileList: res.result, message: "Files fetched successfully", status: true })
+
+
+    fetch('http://localhost:3000/project', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params) // Your request body
+    })
+      .then(response => {
+        if (!response.ok) {
+          // If response is not OK, reject with status text
+          return Promise.reject(`HTTP error! status: ${response.status}`);
         }
+        // Otherwise, process the response as a Blob
+        return response.blob();
+      })
+      .then(blob => {
+        // Handle the Blob data (e.g., download the file, display it, etc.)
 
+        console.log('Received Blob:', blob);
+        this.setState({ apiService: false })
         setTimeout(function () {
-          this.setState({ fileList: res.result, message: "Files fetched successfully", status: true })
+          this.setState({ fileList: [], message: "Files fetched successfully", status: true })
           this.loadDefaults()
         }.bind(this), 2000)
-
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'files.zip');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch(error => {
+        console.error('Error during fetch operation:', error);
       });
+
   }
 
   loadDefaults = () => {
@@ -182,16 +207,16 @@ class FileList extends React.Component {
               </Select>
             </FormControl> */}
             <div style={{ display: 'flex', flexDirection: 'row' }} >
-              <LabeledSwitch
+              {/* <LabeledSwitch
                 checked={viewType} onChange={(e) => this.handleSwitchChange(e)}
-                labelLeft="View Inputs" labelRight="View Outputs" />
+                labelLeft="View Inputs" labelRight="View Outputs" /> */}
 
               <div style={{ flexDirection: 'end', flex: 1, float: 'end' }}>
                 <Button variant="contained" color="primary"
                   style={customStyles.successBtn}
                   size="small" onClick={e => this.onSubmit(e)}
                 >
-                  Go
+                  Download Inputs/Outputs
                 </Button>
               </div>
 

@@ -90,8 +90,8 @@ function DashBoard() {
         </Grid2>
         <Grid2 size={{ md: 4 }} sx={{ padding: 1 }}>
           {value === 0 ? <FileActions type={"RTL"} /> : false}
-          {/* {value === 1 ? <UploadFile type={"RAL"} /> : false}
-          {value === 2 ? <UploadFile type={"RTL-TOP"} /> : false} */}
+          {value === 1 ? <FileActions type={"RAL"} /> : false}
+          {/* {value === 2 ? <UploadFile type={"RTL-TOP"} /> : false} */}
 
         </Grid2>
       </Grid2>

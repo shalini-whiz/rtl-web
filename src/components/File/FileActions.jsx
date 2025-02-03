@@ -5,6 +5,7 @@ import appStyles from "../../styles/appStyles";
 import { customStyles } from "../../styles/tableStyle";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import GroupAddSharp from "@mui/icons-material/GroupAddSharp"
 import { UploadFileOutlined } from "@mui/icons-material";
 import FileList from "./FileList";
 import UploadInputs from "./UploadInputs";
@@ -65,7 +66,7 @@ class FileActions extends React.Component {
   }
   uploadFile = async (e) => {
     const validTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel'];
+      'application/vnd.ms-excel', 'application/xml', 'text/xml'];
     console.log(e.target.files[0]);
     let uploadedFile = e.target.files[0];
     console.log(uploadedFile.type)
@@ -91,7 +92,7 @@ class FileActions extends React.Component {
   saveProfile = async () => {
     let { selectedImage, projectId } = this.state;
     const validTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel'];
+      'application/vnd.ms-excel', 'application/xml', 'text/xml'];
     this.setState({ uploadErr: "", projectError: false })
     if (projectId == '') {
       this.setState({ projectError: true })
@@ -139,34 +140,31 @@ class FileActions extends React.Component {
         {apiService ? <LinearProgress /> : false}
         {commons.detectInternet()}
         <Paper elevation={3}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', }}>
-            <IconButton aria-label="upload file"
-              onClick={(e) => this.handleToggle(e, "uploadFile")}
+          <div style={{ display: 'flex', justifyContent: 'end', flexDirection: "row" }}>
+            <div style={{ flex: 1 }}>
+              {toggleAction === "uploadFile" ? <UploadInputs type={this.props.type} /> :
+                <div></div>}
 
-              color={toggleAction == "uploadFile" ? 'primary' : ''}
-            >
-              <Tooltip title="Upload Files">
-                <CloudUploadIcon style={{ padding: 10 }} /></Tooltip>
-            </IconButton>
-            <IconButton aria-label="view inputs/outputs"
-              onClick={(e) => this.handleToggle(e, "viewFile")}
-              color={toggleAction == "viewFile" ? 'primary' : ''}>
-              <Tooltip title="View Files">
-                <VisibilityIcon style={{ padding: 10 }} />
-              </Tooltip>
-            </IconButton>
+            </div>
+            <div style={{ flexDirection: 'column', display: 'flex' }}>
+              <IconButton aria-label="upload file"
+                onClick={(e) => this.handleToggle(e, "uploadFile")}
+
+                color={toggleAction == "uploadFile" ? 'primary' : ''}
+              >
+                <Tooltip title="Upload Files">
+                  <CloudUploadIcon style={{ padding: 10 }} /></Tooltip>
+              </IconButton>
+              <IconButton aria-label="user"
+                onClick={(e) => this.handleToggle(e, "managerUser")}
+                color={toggleAction == "managerUser" ? 'primary' : ''}>
+                <Tooltip title="Manager User">
+                  <GroupAddSharp style={{ padding: 10 }} />
+                </Tooltip>
+              </IconButton>
+            </div>
           </div>
-          {/* <ToggleButtonGroup
-            color="primary"
-            value={toggleAction}
-            exclusive
-            onChange={(e) => this.handleToggle(e)}
-            style={{ display: 'flex', padding: 10, marginBottom: 10, justifyContent: 'flex-end' }}
-          >
-            <ToggleButton value="uploadFile" style={{}}><CloudUploadIcon style={{ padding: 10 }}></CloudUploadIcon>&nbsp;FILE</ToggleButton>
-            <ToggleButton value="viewFile" style={{}}><VisibilityIcon style={{ padding: 10 }}></VisibilityIcon>&nbsp;FILE</ToggleButton>
-          </ToggleButtonGroup> */}
-          {toggleAction === "uploadFile" ? <UploadInputs type={this.props.type} /> : <FileList type={this.props.type} />}
+
 
         </Paper>
       </Box>

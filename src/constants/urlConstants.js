@@ -1,6 +1,6 @@
 var liveAddress = "https://rtl-gen.onrender.com/";
 
-var liveAddress1 = "http://localhost:3000/"
+var liveAddress2 = "http://localhost:3000/"
 export const SERVER_URL = liveAddress;
 export const buyerRole = "buyer";
 export const vendorRole = "vendor";

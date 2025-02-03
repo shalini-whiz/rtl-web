@@ -40,6 +40,7 @@ let loginSchema = [
         required: true,
         type: 'text',
         label: 'Email',
+        displayName:'Email'
     },
     {
         key: 'password',
@@ -48,6 +49,7 @@ let loginSchema = [
         required: true,
         type: 'password',
         label: 'Password',
+        displayName:'Password'
     },
 ];
 
@@ -71,26 +73,37 @@ function Login(props) {
         event.preventDefault();
         let loginContent = [...loginData];
         let validFormData = await validateFormData(loginContent);
-
-        let params = await formToObj(validFormData);
-        params.op = "login"
-        console.log("params " + JSON.stringify(params))
-        commons.getAPIRes(params, "POST", "login").then(userRes => {
-            console.log("userRes here " + JSON.stringify(userRes))
-            if (userRes.status) {
-                localStorage.setItem("userInfo", JSON.stringify(userRes.result));
-                localStorage.setItem("token", userRes.result.token);
-                localStorage.setItem("login", true);
-
-                AuthService.setUserInfo(userRes.result)
-
-                navigate('/dashboard');
-            }
-            else {
-                alert("Invalid credentials")
-
-            }
+        setLoginData(validFormData)
+        let result = validFormData.find(item => {
+            if (item.error.length) return item;
         });
+
+        console.log("log error : " + result)
+        if (!result) {
+
+            let params = await formToObj(validFormData);
+            params.op = "login"
+            console.log("params " + JSON.stringify(params))
+            commons.getAPIRes(params, "POST", "login").then(userRes => {
+                console.log("userRes here " + JSON.stringify(userRes))
+                if (userRes.status) {
+                    localStorage.setItem("userInfo", JSON.stringify(userRes.result));
+                    localStorage.setItem("token", userRes.result.token);
+                    localStorage.setItem("login", true);
+
+                    AuthService.setUserInfo(userRes.result)
+
+                    navigate('/dashboard');
+                }
+                else {
+                    alert("Invalid credentials")
+
+                }
+            });
+        }
+        else{
+
+        }
     };
 
     const renderDashBoard = () => {
