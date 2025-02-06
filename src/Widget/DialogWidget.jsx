@@ -6,7 +6,9 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
-
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
+import proxelera from "../images/proxelera.png"
+import { Divider } from '@mui/material';
 
 function DialogWidget(props) {
 
@@ -18,36 +20,56 @@ function DialogWidget(props) {
             return;
         }
         setOpen(false);
+        props.closeDialog()
 
     };
 
     return (
-        <Dialog
-            fullWidth
-            maxWidth={props.maxWidth ? props.maxWidth : "md"}
-            disableBackdropClick
-            disableEscapeKeyDown
-            open={open}
-            onClose={handleClose}>
-            {props.dialogTitle ? 
-            <DialogTitle style={{  textAlign: 'center', fontWeight: 'bold' }}>{props.dialogTitle}</DialogTitle>
- : false}
-            <DialogContent>
-                {props.dialogContent}
-                <DialogContentText>
-                    {props.dialogContentText}
+        <ClickAwayListener onClickAway={handleClose}>
+            <Dialog
+                fullWidth
+                maxWidth={props.maxWidth ? props.maxWidth : "md"}
+                // disablebackdropclick="true"
+                disableEscapeKeyDown
+                open={open}
+                onClose={handleClose}>
+                {props.dialogTitle ?
+                    <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <img src={proxelera} style={{ width: '50px', marginRight: 10 }} />
+                            {props.dialogTitle}
 
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                {props.okDialog ? <Button onClick={props.okDialog} variant='contained' autoFocus disabled={props.apiService}>
-                    {props.okTitle ? props.okTitle : 'OK'}
-                </Button> : ''}
-                <Button onClick={props.closeDialog} variant='contained' autoFocus>
-                    CLOSE
-                </Button>
-            </DialogActions>
-        </Dialog>
+                        </div>
+
+
+                    </DialogTitle>
+                    : false}
+                <Divider />
+                <DialogContent>
+                    {props.dialogContent}
+                    <DialogContentText>
+                        {props.dialogContentText}
+
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    {props.okDialog ? <Button onClick={props.okDialog} variant='contained'
+                        autoFocus disabled={props.apiService}
+                        style={{ background: props.negOk && props.negOk == true ? 'red' : 'blue', color: 'white' }}
+                    >
+                        {props.okTitle ? props.okTitle : 'OK'}
+                    </Button> : ''}
+
+                    <Button onClick={props.closeDialog} variant='contained' autoFocus
+                        style={{ background: props.negCancel && props.negCancel == true ? 'red' : 'blue', color: 'white' }}
+
+                    >
+                        {props.cancelTitle ? props.cancelTitle : 'CLOSE'}
+
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </ClickAwayListener>
 
     )
 

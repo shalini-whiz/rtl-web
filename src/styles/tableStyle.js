@@ -22,6 +22,12 @@ const tableOptions = {
     // tableLayout: "fixed"
 };
 
+const hyperlink = {
+    color: '#1976d2',
+    textDecoration: 'underline',
+    fontStyle: 'italic',
+    fontWeight: 'bold'
+}
 const titleCell = {
     fontWeight: "bold",
     fontSize: "14px",
@@ -71,6 +77,12 @@ const customStyles = {
     successBtn: {
         background: 'green',
         color: 'white'
+    },
+    hyperlink: {
+        color: '#1976d2',
+        textDecoration: 'underline',
+        fontStyle: 'italic',
+        fontWeight: 'bold'
     }
 }
 

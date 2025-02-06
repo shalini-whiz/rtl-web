@@ -5,6 +5,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ResponsiveDrawer from "./DrawerActions"
 import proxelera from "../../images/proxelera.png";
 import { makeStyles } from '@mui/styles';
+import { SERVER_URL, WEB_URL } from '../../constants/urlConstants';
 const { AppBar, Toolbar, Typography, Grid2 } = require("@mui/material")
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,8 +37,10 @@ export default function TopAppBar(props) {
     const classes = useStyles();
     let [menuIndex, setMenuIndex] = React.useState(0)
     // let userId = AuthService.getUserId();
-  
 
+    const handleImageClick = (e) => {
+        window.location.href = WEB_URL;
+    };
     return (
         <div className={classes.root} style={{}}>
             <AppBar
@@ -78,11 +81,11 @@ export default function TopAppBar(props) {
                                     overflow: "hidden"
                                 }}
                             >
-                                <img src={proxelera} />
+                                <img src={proxelera} onClick={(e) => handleImageClick(e)} />
                             </div>
                         </Grid2>
                         <Grid2 size={{ md: 6 }}>
-                            <div style={{ padding: '20px',font:'20xp',color:'white',fontWeight:'bold' }}>Reg-Magic</div>
+                            <div style={{ padding: '20px', font: '20xp', color: 'white', fontWeight: 'bold' }}>Reg-Magic</div>
                         </Grid2>
                         <Grid2 size={{ md: 3 }} direction="row" display={"flex"} sx={{
                             justifyContent: "center",

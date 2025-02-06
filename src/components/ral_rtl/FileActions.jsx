@@ -7,7 +7,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import GroupAddSharp from "@mui/icons-material/GroupAddSharp"
 import { UploadFileOutlined } from "@mui/icons-material";
-import FileList from "./FileList";
 import UploadInputs from "./UploadInputs";
 const { Card, CardHeader, CardContent, CardActions, Button, LinearProgress, Divider,
   Typography, Box, RadioGroup, Radio, FormControlLabel, FormControl, InputLabel, Select, MenuItem,
@@ -146,7 +145,7 @@ class FileActions extends React.Component {
                 <div></div>}
 
             </div>
-            <div style={{ flexDirection: 'column', display: 'flex' }}>
+            {/* <div style={{ flexDirection: 'column', display: 'flex' }}>
               <IconButton aria-label="upload file"
                 onClick={(e) => this.handleToggle(e, "uploadFile")}
 
@@ -158,11 +157,11 @@ class FileActions extends React.Component {
               <IconButton aria-label="user"
                 onClick={(e) => this.handleToggle(e, "managerUser")}
                 color={toggleAction == "managerUser" ? 'primary' : ''}>
-                <Tooltip title="Manager User">
+                <Tooltip title="Manage User">
                   <GroupAddSharp style={{ padding: 10 }} />
                 </Tooltip>
               </IconButton>
-            </div>
+            </div> */}
           </div>
 
 

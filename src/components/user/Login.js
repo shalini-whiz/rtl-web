@@ -40,7 +40,7 @@ let loginSchema = [
         required: true,
         type: 'text',
         label: 'Email',
-        displayName:'Email'
+        displayName: 'Email'
     },
     {
         key: 'password',
@@ -49,7 +49,7 @@ let loginSchema = [
         required: true,
         type: 'password',
         label: 'Password',
-        displayName:'Password'
+        displayName: 'Password'
     },
 ];
 
@@ -63,6 +63,13 @@ function Login(props) {
             navigate("/dashboard") :
             loadForm();
     }, []);
+
+    const handleKeyDown = (event, key) => {
+        console.log(event)
+        if (event.key === 'Enter') {
+            handleLogin(event, key);
+        }
+    };
 
     const loadForm = async () => {
         let loginSchemaData = [...loginSchema];
@@ -80,12 +87,13 @@ function Login(props) {
 
         console.log("log error : " + result)
         if (!result) {
-
+            setLoading(true)
             let params = await formToObj(validFormData);
             params.op = "login"
             console.log("params " + JSON.stringify(params))
             commons.getAPIRes(params, "POST", "login").then(userRes => {
                 console.log("userRes here " + JSON.stringify(userRes))
+                setLoading(false)
                 if (userRes.status) {
                     localStorage.setItem("userInfo", JSON.stringify(userRes.result));
                     localStorage.setItem("token", userRes.result.token);
@@ -101,7 +109,7 @@ function Login(props) {
                 }
             });
         }
-        else{
+        else {
 
         }
     };
@@ -148,6 +156,8 @@ function Login(props) {
                             alt="The house from the offer."
                             src={proxelera}
                         />
+                        {loading ? <LinearProgress /> : false}
+
                         {/* <CardHeader>RegMagic</CardHeader> */}
                         {loginData.map((item, index) => {
                             return (
@@ -159,6 +169,7 @@ function Login(props) {
                                     fullWidth
                                     required
                                     value={item.value}
+                                    onKeyDown={(e) => handleKeyDown(e, item.key)}
                                     onChange={(e) => handleChange(e, item.key)}
                                     error={!!item.error}
                                     helperText={item.error}
@@ -185,7 +196,7 @@ function Login(props) {
                         >
                             Login
                         </Button>
-                        <Typography style={{ color: "#6CB4EE" }}>Forgot password ?</Typography>
+                        {/* <Typography style={{ color: "#6CB4EE" }}>Forgot password ?</Typography> */}
 
                     </Box>
                 </Paper>

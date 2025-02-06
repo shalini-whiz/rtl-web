@@ -9,6 +9,7 @@ import AuthService from '../service/AuthService';
 import { ThemeProvider } from '@mui/material/styles';
 import DashBoard from '../components/DashBoard/Dashboard';
 import PrivateRoute from "./PrivateRoute"
+import DHSPolicy from '../components/other/DHSPolicy';
 function renderComponent(Component, defaultProps, customProps) {
     console.log("render component")
     let props = { ...defaultProps, ...customProps }
@@ -41,6 +42,7 @@ const AppRoutes = () => {
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<DashBoard />} />
+            <Route path="/policy" element={<DHSPolicy />} />
             {/* <PrivateRoute path="/dashboard" element={<DashBoard />} /> */}
         </Routes>
     );

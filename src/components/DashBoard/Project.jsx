@@ -66,14 +66,16 @@ class Project extends React.Component {
 
     return (
       <Box sx={{ alignContent: 'center' }}>
-        <FormControl row fullWidth style={{ marginBottom: 10 }} error={projectError}>
-          <br />
-          <InputLabel id="demo-simple-select-label">Project</InputLabel>
+        <div style={{ display: 'flex', flexDirection: 'row',alignItems:'center' }}>
+          <InputLabel id="demo-simple-select-label" style={{ margin: 1, padding: 2 }}
+>Project</InputLabel>
+           <FormControl variant="standard"
+            style={{ margin: 1, padding: 2, width: '250px' }}
+            error={projectError}>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={projectId}
-            label="Project"
             onChange={(e) => this.handleProject(e)}
           >
             {projects.map(item =>
@@ -81,7 +83,24 @@ class Project extends React.Component {
             )}
 
           </Select>
-        </FormControl>
+          </FormControl>
+        </div>
+        {/* <FormControl variant="standard"
+          style={{ margin: 1, padding: 2, width: '350px', display: 'flex', flexDirection: 'row', background: 'red' }}
+          error={projectError}>
+          <InputLabel id="demo-simple-select-label">Project</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={projectId}
+            onChange={(e) => this.handleProject(e)}
+          >
+            {projects.map(item =>
+              <MenuItem value={item._id.toString()}>{item.name}</MenuItem>
+            )}
+
+          </Select>
+        </FormControl> */}
         {apiService ? <LinearProgress /> : false}
         <SnackBarWidget message={message} status={status} />
       </Box>

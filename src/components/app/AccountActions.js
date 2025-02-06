@@ -92,9 +92,11 @@ export default function AccountActions() {
             {dialogStatus && dialogType === "logout" ?
                 <DialogWidget
                     maxWidth="xs"
-                    dialogTitle={"Logout"}
+                    dialogTitle={"Confirm Logout"}
                     okTitle={"Logout"}
-                    dialogContent={"Are you sure you want to logout from RegMagic"}
+                    negOk={true}
+                    cancelTitle={"Continue Session"}
+                    dialogContent={"Are you sure you want to logout from RegMagic ?"}
                     okDialog={logOutUser}
                     closeDialog={handleDialogClose}
                 /> : false}
